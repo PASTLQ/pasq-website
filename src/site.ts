@@ -1,9 +1,9 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export const SITE = {
-  name: 'pasq',
+  name: 'PASQ',
   description: '自分のことをゆるく書き綴る場所',
-  author: 'Kai',
+  author: 'PASQ',
 };
 
 export type Post = CollectionEntry<'posts'>;
