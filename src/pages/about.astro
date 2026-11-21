@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+---
+<Base title="このサイト" current="about">
+  <header class="head"><h1 class="title">このサイト</h1></header>
+  <div class="prose">
+    <p>{SITE.description}。{SITE.author}が、思ったことや日々のことを気ままに書いています。</p>
+    <p>役に立つことは書いていないかもしれません。書きたくなったときに書く、実験的な場所です。</p>
+  </div>
+</Base>

@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPosts, formatDate, isoDate, url } from '../site';
+
+const posts = await getPosts();
+---
+<Base current="home">
+  <header class="head">
+    <h1 class="title">日々</h1>
+    <span class="aside">{posts.length} 件</span>
+  </header>
+
+  {posts.length === 0 ? (
+    <p class="muted">まだ何も書かれていません。<code>src/content/posts/</code> に Markdown を置くとここに並びます。</p>
+  ) : (
+    <div class="rows">
+      {posts.map((p) => {
+        const excerpt = (p.body ?? '').replace(/[#>*`\-\[\]()!]/g, '').replace(/\s+/g, ' ').trim().slice(0, 120);
+        return (
+          <a class="entry" href={url(`/posts/${p.id}`)}>
+            <time class="entry-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}{p.data.draft && ' (下書き)'}</time>
+            {p.data.title && <span class="entry-title">{p.data.title}</span>}
+            <span class="entry-excerpt">{excerpt}</span>
+          </a>
+        );
+      })}
+    </div>
+  )}
+</Base>

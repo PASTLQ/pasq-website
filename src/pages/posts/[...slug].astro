@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate, isoDate, url } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, date, tags } = post.data;
+---
+<Base title={title ?? formatDate(date)} current="home">
+  <article class="post">
+    <header class="post-head">
+      <time class="muted small" datetime={isoDate(date)}>{formatDate(date)}</time>
+      {title && <h1 class="title">{title}</h1>}
+      {tags.length > 0 && (
+        <div class="chips">
+          {tags.map((t) => <a class="chip" href={url(`/tags/${encodeURIComponent(t)}`)}>{t}</a>)}
+        </div>
+      )}
+    </header>
+    <div class="prose"><Content /></div>
+  </article>
+  <hr class="rule" />
+  <a class="btn" href={url('/')}>日々に戻る</a>
+</Base>

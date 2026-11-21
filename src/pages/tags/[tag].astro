@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate, isoDate, url } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return tags.map((tag) => ({ params: { tag }, props: { posts: posts.filter((p) => p.data.tags.includes(tag)) } }));
+}
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+<Base title={`#${tag}`} current="tags">
+  <header class="head"><h1 class="title">{tag}</h1><span class="aside">{posts.length} 件</span></header>
+  <div class="rows">
+    {posts.map((p) => (
+      <a class="entry" href={url(`/posts/${p.id}`)}>
+        <time class="entry-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time>
+        <span class="entry-title">{p.data.title ?? '(無題)'}</span>
+      </a>
+    ))}
+  </div>
+</Base>

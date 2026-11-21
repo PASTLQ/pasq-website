@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+# 公開しない下書き(手元だけ)
+drafts/*
+!drafts/.gitkeep
