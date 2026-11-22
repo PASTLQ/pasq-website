@@ -51,14 +51,15 @@ draft: false         # true の間は本番に出ない
 - 画像は `public/` に置く。base パスが付くので、記事内では `/pasq-website/xxx.jpg` のように参照する(`url()` は .astro/.ts 内用)。
 
 ## デザインの方針
-- Kai 共通のデザインシステム「Desk 2 / Quiet Pro」(白とジンク、1px の線、アクセントはインディゴ1色、ライト・ダーク自動)。旧 Soft(ニューモーフィズム)は廃止。
-- 色・余白・角丸はトークン(`--bg` `--surface` `--surface-2` `--border` `--fg` `--muted` `--accent` など)から取る。**色のリテラルを書かない。**
-- 完全にモノトーン(アクセントも `--fg`)。透明感は `app.css` の glass トークン(`--glass` など)で出す。背景の淡い光とガラス調はこのサイトの意図的な例外。色のついたグラデーション・光彩・絵文字は使わない。
-- 遷移は View Transitions、記事の出現と読み進みバーはスクロール駆動アニメーション。`prefers-reduced-motion` / `prefers-reduced-transparency` で止める。
-- ナビは画面下に浮かぶガラスのドック(`.dock`)。
-- 本文は日本語基準(14px / 行間1.65)。記事本文 `.prose` は 16px / 行間1.9。
-- 操作要素はタッチ端末で 44px 以上。選択状態は `--accent-soft` + 太字(色だけに頼らない)。
-- ナビの入口は3つまで。増やさない。
+- 「Desk 2 / Quiet Pro」のトークン(ds.css)を土台に、このサイト専用の **editorial monochrome** を重ねている(`app.css`)。完全にモノトーン。色を足さない。
+- 見せ場はトップの Three.js(`components/Scene.tsx`: 粘土のブロックがカーソルで隆起)。ほかは罫線・巨大な文字組み・細い縦罫・グレイン。**連番や件数などの意味のない数字は入れない**(日付と、東京の時刻表示だけ)。巨大な「PASQ」の文字も置かない。
+- 書体は Inter Tight(見出し)/ Instrument Serif(イタリックの差し色)/ Geist Mono(キャプション)を `@fontsource` で同梱。日本語は system のゴシック。
+- React の島(Islands): `Chrome.tsx`(Lenis の慣性スクロール + カーソルの輪, `client:idle`)、`PostIndex.tsx`(記事の索引。ホバーで行が反転、抜粋カードが追従, `client:load`)、`Scene.tsx`(`client:only`)。それ以外は Astro の静的 HTML。
+- 遷移は View Transitions(クロスドキュメント)。出現・読み進みバーは CSS のスクロール駆動アニメーション。
+- `prefers-reduced-motion` で動きを止める(Lenis・Scene・各アニメーション)。WebGL が無い環境では背景なしで表示される。
+- 色のリテラルは書かない(ブレンド用の `#fff` だけ例外)。操作要素はタッチ端末で 44px 以上。
+- ナビは「記事 / タグ / about」の3つまで。増やさない。
+- 既定はライト(`<html data-theme="light">`)。フッターの「Light / Dark」で切り替え、選択は localStorage に保存。OS の設定には従わない。
 
 ## ハマりどころ(実際に踏んだもの)
 - **公開URLのサブパス**: `astro.config.mjs` が `GITHUB_REPOSITORY` から `site` と `base` を自動で決める(`/pasq-website`)。ローカルは `base` なし。内部リンクは必ず `url()` を通す。`/` 直書きは公開で壊れる。

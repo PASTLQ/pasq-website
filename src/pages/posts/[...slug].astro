@@ -15,16 +15,18 @@ const { title, date, tags } = post.data;
 <Base title={title ?? formatDate(date)} current="post">
   <article class="post">
     <header class="post-head">
-      <time class="muted small" datetime={isoDate(date)}>{formatDate(date)}</time>
-      {title && <h1 class="title">{title}</h1>}
-      {tags.length > 0 && (
-        <div class="chips">
-          {tags.map((t) => <a class="chip" href={url(`/tags/${encodeURIComponent(t)}`)}>{t}</a>)}
-        </div>
-      )}
+      <a class="back" href={url('/')} data-cursor="戻る">← <span class="serif">Index</span></a>
+      {title ? <h1 class="post-title">{title}</h1> : <h1 class="post-title is-date">{formatDate(date)}</h1>}
     </header>
-    <div class="prose"><Content /></div>
+    <div class="post-grid">
+      <aside class="post-side">
+        <dl>
+          <div><dt>Date</dt><dd><time datetime={isoDate(date)}>{formatDate(date)}</time></dd></div>
+          {tags.length > 0 && <div><dt>Tags</dt><dd class="post-tags">{tags.map((t) => <a href={url(`/tags/${encodeURIComponent(t)}`)}>#{t}</a>)}</dd></div>}
+        </dl>
+      </aside>
+      <div class="prose"><Content /></div>
+    </div>
+    <a class="next" href={url('/')} data-cursor="戻る"><span class="serif">Back to</span> 記事 <i>↗</i></a>
   </article>
-  <hr class="rule" />
-  <a class="btn" href={url('/')}>日々に戻る</a>
 </Base>

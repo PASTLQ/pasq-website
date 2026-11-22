@@ -1,11 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE } from '../site';
+import { SITE, url } from '../site';
 ---
-<Base title="このサイト" current="about">
-  <header class="head"><h1 class="title">このサイト</h1></header>
-  <div class="prose">
-    <p>{SITE.description}。{SITE.author}が、思ったことや日々のことを気ままに書いています。</p>
-    <p>役に立つことは書いていないかもしれません。書きたくなったときに書く、実験的な場所です。</p>
-  </div>
+<Base title="About" current="about">
+  <main class="section page-top">
+    <header class="sec-head">
+      <h1 class="sec-title"><span class="serif">About</span></h1>
+    </header>
+    <p class="statement">
+      {SITE.description}。<br />
+      <span class="serif">A slow, experimental place</span><br />
+      for everyday thoughts.
+    </p>
+    <div class="prose narrow">
+      <p>{SITE.author}が、思ったことや日々のことを気ままに書いています。</p>
+      <p>役に立つことは書いていないかもしれません。書きたくなったときに書く、実験的な場所です。</p>
+    </div>
+    <dl class="spec">
+      <div><dt>Author</dt><dd>{SITE.author}</dd></div>
+      <div><dt>Built with</dt><dd>Astro / React / Three.js / Motion / Lenis</dd></div>
+      <div><dt>Hosting</dt><dd>GitHub Pages</dd></div>
+      <div><dt>Feed</dt><dd><a href={url('/rss.xml')}>RSS ↗</a></dd></div>
+    </dl>
+  </main>
 </Base>

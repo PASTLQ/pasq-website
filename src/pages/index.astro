@@ -1,33 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getPosts, formatDate, isoDate, url } from '../site';
+import Scene from '../components/Scene.tsx';
+import PostIndex from '../components/PostIndex.tsx';
+import { getPosts, toIndexItems } from '../site';
 
 const posts = await getPosts();
+const items = toIndexItems(posts);
 ---
 <Base current="home">
-  <section class="hero-block">
-    <h1 class="hero-title">日々<span>、</span><br />ゆるく。</h1>
-    <p class="hero-lead">思ったことや、その日のことを気ままに書き留めています。</p>
+  <section class="hero">
+    <Scene client:only="react" />
+    <h1 class="sr">PASQ</h1>
+    <p class="hero-cap hero-cap-b">ゆるく書き綴る、<br />実験的な日々の置き場。</p>
+    <p class="hero-vert">PASQの雑記</p>
+    <p class="hero-scroll" aria-hidden="true"><span>Scroll</span><i></i></p>
   </section>
-  <header class="head">
-    <h2 class="title">記事</h2>
-    <span class="aside">{posts.length} 件</span>
-  </header>
 
-  {posts.length === 0 ? (
-    <p class="muted">まだ何も書かれていません。<code>src/content/posts/</code> に Markdown を置くとここに並びます。</p>
-  ) : (
-    <div class="rows">
-      {posts.map((p) => {
-        const excerpt = (p.body ?? '').replace(/[#>*`\-\[\]()!]/g, '').replace(/\s+/g, ' ').trim().slice(0, 120);
-        return (
-          <a class="entry" href={url(`/posts/${p.id}`)}>
-            <time class="entry-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}{p.data.draft && ' (下書き)'}</time>
-            {p.data.title && <span class="entry-title">{p.data.title}</span>}
-            <span class="entry-excerpt">{excerpt}</span>
-          </a>
-        );
-      })}
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      {[0, 1].map(() => (
+        <span>NOTES <em>—</em> 日々 <em>—</em> <span class="serif">everyday</span> <em>—</em> ゆるく <em>—</em> <span class="serif">slowly</span> <em>—</em> </span>
+      ))}
     </div>
-  )}
+  </div>
+
+  <main class="section" id="index">
+    <header class="sec-head">
+      <h2 class="sec-title"><span class="serif">Index</span> 記事</h2>
+    </header>
+    {posts.length === 0
+      ? <p class="muted">まだ何も書かれていません。</p>
+      : <PostIndex client:load items={items} />}
+  </main>
 </Base>

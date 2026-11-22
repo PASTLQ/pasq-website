@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getPosts, formatDate, isoDate, url } from '../../site';
+import PostIndex from '../../components/PostIndex.tsx';
+import { getPosts, toIndexItems, url } from '../../site';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -11,13 +12,11 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 <Base title={`#${tag}`} current="tags">
-  <header class="head"><h1 class="title">{tag}</h1><span class="aside">{posts.length} 件</span></header>
-  <div class="rows">
-    {posts.map((p) => (
-      <a class="entry" href={url(`/posts/${p.id}`)}>
-        <time class="entry-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time>
-        <span class="entry-title">{p.data.title ?? '(無題)'}</span>
-      </a>
-    ))}
-  </div>
+  <main class="section page-top">
+    <a class="back" href={url('/tags')} data-cursor="戻る">← <span class="serif">All tags</span></a>
+    <header class="sec-head">
+      <h1 class="sec-title big"><span class="serif">#</span>{tag}</h1>
+    </header>
+    <PostIndex client:load items={toIndexItems(posts)} />
+  </main>
 </Base>

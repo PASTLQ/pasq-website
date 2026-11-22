@@ -8,12 +8,16 @@ for (const p of posts) for (const t of p.data.tags) counts.set(t, (counts.get(t)
 const tags = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
 ---
 <Base title="タグ" current="tags">
-  <header class="head"><h1 class="title">タグ</h1></header>
-  {tags.length === 0 ? <p class="muted">タグはまだありません。</p> : (
-    <div class="rows">
-      {tags.map(([t, n]) => (
-        <a class="row-link" href={url(`/tags/${encodeURIComponent(t)}`)}><span>{t}</span><span class="n">{n}</span></a>
-      ))}
-    </div>
-  )}
+  <main class="section page-top">
+    <header class="sec-head">
+      <h1 class="sec-title"><span class="serif">Tags</span> タグ</h1>
+    </header>
+    {tags.length === 0 ? <p class="muted">タグはまだありません。</p> : (
+      <ul class="tagcloud">
+        {tags.map(([t, n]) => (
+          <li><a href={url(`/tags/${encodeURIComponent(t)}`)} data-cursor="開く">{t}</a></li>
+        ))}
+      </ul>
+    )}
+  </main>
 </Base>
