@@ -3,7 +3,7 @@ import '../styles/ds.css';
 import '../styles/app.css';
 import { SITE, url } from '../site';
 
-interface Props { title?: string; description?: string; current?: 'home' | 'tags' | 'about' }
+interface Props { title?: string; description?: string; current?: 'home' | 'tags' | 'about' | 'post' }
 const { title, description = SITE.description, current } = Astro.props;
 const pageTitle = title ? `${title} | ${SITE.name}` : SITE.name;
 const nav = [
@@ -25,14 +25,11 @@ const nav = [
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
   </head>
   <body>
+    {current === 'post' && <div class="progress" aria-hidden="true"></div>}
     <main class="wrap">
       <header class="site-head">
-        <a class="site-name" href={url('/')}>{SITE.name}</a>
-        <nav class="seg" aria-label="メニュー">
-          {nav.map((n) => (
-            <a href={n.href} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a>
-          ))}
-        </nav>
+        <a class="mark" href={url('/')}>{SITE.name}</a>
+        <span class="tag">{SITE.description}</span>
       </header>
       <slot />
       <footer class="muted small site-foot">
@@ -40,5 +37,10 @@ const nav = [
         <a href={url('/rss.xml')}>RSS</a>
       </footer>
     </main>
+    <nav class="dock" aria-label="メニュー">
+      {nav.map((n) => (
+        <a href={n.href} aria-current={(current === n.key || (current === 'post' && n.key === 'home')) ? 'page' : undefined}>{n.label}</a>
+      ))}
+    </nav>
   </body>
 </html>

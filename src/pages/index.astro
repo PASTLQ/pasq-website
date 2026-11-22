@@ -5,8 +5,12 @@ import { getPosts, formatDate, isoDate, url } from '../site';
 const posts = await getPosts();
 ---
 <Base current="home">
+  <section class="hero-block">
+    <h1 class="hero-title">日々<span>、</span><br />ゆるく。</h1>
+    <p class="hero-lead">思ったことや、その日のことを気ままに書き留めています。</p>
+  </section>
   <header class="head">
-    <h1 class="title">日々</h1>
+    <h2 class="title">記事</h2>
     <span class="aside">{posts.length} 件</span>
   </header>
 
