@@ -52,7 +52,7 @@ draft: false         # true の間は本番に出ない
 
 ## デザインの方針
 - 「Desk 2 / Quiet Pro」のトークン(ds.css)を土台に、このサイト専用の **editorial monochrome** を重ねている(`app.css`)。完全にモノトーン。色を足さない。
-- 見せ場はトップの Three.js(`components/Scene.tsx`: 粘土のブロックがカーソルで隆起)。ほかは罫線・巨大な文字組み・細い縦罫・グレイン。**連番や件数などの意味のない数字は入れない**(日付と、東京の時刻表示だけ)。巨大な「PASQ」の文字も置かない。
+- 見せ場はトップの Three.js(`components/Scene.tsx`): ChatGPT 発案の彫刻をコードで組んだもの。コンクリートの台座と打ち放しの塊、ブラッシュ仕上げの金属フレーム、薄いガラスの箱、ツタと苔。右上の最大のガラスキューブの手前に「PASQ」を刻印。ドラッグで回せる(OrbitControls、横方向のみ・ズームなし)。初期視点は参考画像に近い斜め正面で、画面に全体が収まる距離を自動で求める。照明は自作のスタジオ環境(ソフトボックス)を PMREM にして使い、コンクリートは手続き生成のテクスチャ。ツタと苔の緑だけは、彫刻の素材として例外的に色を使う。
 - 書体は Inter Tight(見出し)/ Instrument Serif(イタリックの差し色)/ Geist Mono(キャプション)を `@fontsource` で同梱。日本語は system のゴシック。
 - React の島(Islands): `Chrome.tsx`(Lenis の慣性スクロール + カーソルの輪, `client:idle`)、`PostIndex.tsx`(記事の索引。ホバーで行が反転、抜粋カードが追従, `client:load`)、`Scene.tsx`(`client:only`)。それ以外は Astro の静的 HTML。
 - 遷移は View Transitions(クロスドキュメント)。出現・読み進みバーは CSS のスクロール駆動アニメーション。
