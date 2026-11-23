@@ -1,0 +1,5 @@
+---
+// <Callout type="note|warning">注釈</Callout>
+const { type = 'note' } = Astro.props as { type?: 'note' | 'warning' };
+---
+<aside class={`callout callout-${type}`} role="note"><slot /></aside>

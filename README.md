@@ -9,7 +9,7 @@ npm run new            # 今日の日付で下書きを作る
 npm run new -- memo    # 名前つき(2026-11-21-memo.md)
 ```
 
-`src/content/posts/` に Markdown を置くだけです。
+`src/content/posts/{slug}/index.mdx` を置くだけです(`npm run new` が作ります)。画像は同じフォルダに置いて `![説明](photo.jpg)` で参照できます。本文で `<Embed url="..." />` が使えます。
 
 ```md
 ---

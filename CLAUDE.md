@@ -24,8 +24,9 @@ npm run new          # 今日の日付で記事の雛形(draft: true)を作る�
 
 ## 構成
 ```
-src/content/posts/*.md      記事(これを足すだけで公開される)
-src/content.config.ts       記事の項目の定義(date 必須、title/tags/draft は任意)
+src/content/posts/{slug}/index.mdx  記事(1記事1フォルダ。画像は同じフォルダに置く)
+src/content.config.ts       記事の項目の定義(統一記事形式。date 必須、他は任意)
+src/components/mdx/         記事で使える部品(Embed, Callout)
 src/site.ts                 サイト名、記事取得(getPosts)、日付整形、url() ヘルパー
 src/layouts/Base.astro      共通レイアウト(ヘッダーのナビ3つ: 日々 / タグ / このサイト)
 src/pages/                  index(一覧) posts/[...slug] tags/ about rss.xml.js
@@ -46,7 +47,8 @@ draft: false         # true の間は本番に出ない
 ---
 本文(Markdown)
 ```
-- ファイル名は `YYYY-MM-DD-名前.md`。ファイル名がそのまま URL(`/posts/<ファイル名>`)になる。
+- フォルダ名は `YYYY-MM-DD-名前`。フォルダ名がそのまま URL(`/posts/<フォルダ名>`)になる。`slug` はフォルダ名と同じにする。
+- 本文で `<Embed url="..." />`(YouTube / X / リンクカード)と `<Callout>` が使える。統一仕様は blog-studio の `docs/SPEC.md`。
 - 本番ビルドでは `draft: true` を除外する(一覧・個別ページ・タグ・RSS すべて)。開発サーバーでは表示する。
 - 画像は `public/` に置く。base パスが付くので、記事内では `/pasq-website/xxx.jpg` のように参照する(`url()` は .astro/.ts 内用)。
 

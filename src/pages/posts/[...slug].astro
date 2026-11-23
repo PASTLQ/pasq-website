@@ -1,5 +1,7 @@
 ---
 import { render } from 'astro:content';
+import Embed from '../../components/mdx/Embed.astro';
+import Callout from '../../components/mdx/Callout.astro';
 import Base from '../../layouts/Base.astro';
 import { getPosts, formatDate, isoDate, url } from '../../site';
 
@@ -25,7 +27,7 @@ const { title, date, tags } = post.data;
           {tags.length > 0 && <div><dt>Tags</dt><dd class="post-tags">{tags.map((t) => <a href={url(`/tags/${encodeURIComponent(t)}`)}>#{t}</a>)}</dd></div>}
         </dl>
       </aside>
-      <div class="prose"><Content /></div>
+      <div class="prose"><Content components={{ Embed, Callout }} /></div>
     </div>
     <a class="next" href={url('/')} data-cursor="戻る"><span class="serif">Back to</span> 記事 <i>↗</i></a>
   </article>

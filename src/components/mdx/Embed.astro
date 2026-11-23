@@ -1,0 +1,40 @@
+---
+// <Embed url="..." /> YouTube / X / 一般リンクを URL から判別して表示する(blog-studio docs/SPEC.md §4)。
+// 一般リンクの見出し・画像は、記事フォルダの embeds.json({ [url]: { title, description, image } })から引く。
+const { url } = Astro.props as { url: string };
+
+const metaFiles = import.meta.glob('/src/content/posts/*/embeds.json', { eager: true, import: 'default' }) as Record<string, Record<string, { title?: string; description?: string; image?: string }>>;
+const meta = Object.values(metaFiles).reduce((a, m) => ({ ...a, ...m }), {} as Record<string, { title?: string; description?: string; image?: string }>)[url] ?? {};
+
+let host = url;
+try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { /* 不正な URL はそのまま表示 */ }
+
+const youtubeId = (() => {
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'youtu.be') return u.pathname.slice(1);
+    if (/(^|\.)youtube\.com$/.test(u.hostname)) {
+      if (u.pathname === '/watch') return u.searchParams.get('v');
+      const m = u.pathname.match(/^\/(shorts|embed|live)\/([\w-]+)/);
+      if (m) return m[2];
+    }
+  } catch { /* */ }
+  return null;
+})();
+const isX = /^(?:www\.)?(?:x|twitter)\.com$/.test(host);
+const kind = youtubeId ? 'youtube' : isX ? 'x' : 'link';
+---
+{kind === 'youtube' ? (
+  <div class="embed embed-video">
+    <iframe src={`https://www.youtube-nocookie.com/embed/${youtubeId}`} title="YouTube" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+) : (
+  <a class={`embed embed-card${kind === 'x' ? ' is-x' : ''}`} href={url} target="_blank" rel="noopener noreferrer">
+    {meta.image && <img src={meta.image} alt="" loading="lazy" />}
+    <span class="embed-body">
+      <span class="embed-title">{meta.title ?? (kind === 'x' ? 'X の投稿' : host)}</span>
+      {meta.description && <span class="embed-desc">{meta.description}</span>}
+      <span class="embed-host">{kind === 'x' ? 'x.com' : host}</span>
+    </span>
+  </a>
+)}

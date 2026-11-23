@@ -200,3 +200,18 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
   .progress { display: none; }
   .sec-head, .tagcloud li, .statement, .spec > div, .prose > *, .post-head > *, .ix-row { animation: none !important; }
 }
+
+/* 埋め込み部品(Embed / Callout) */
+.embed { display: block; }
+.embed-video { aspect-ratio: 16 / 9; border-radius: var(--r-lg); overflow: hidden; background: var(--surface-2); }
+.embed-video iframe { width: 100%; height: 100%; border: 0; }
+.embed-card { display: flex; gap: var(--s3, 1rem); align-items: stretch; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; text-decoration: none !important; color: inherit; background: var(--surface); transition: border-color var(--dur); }
+.embed-card:hover { border-color: var(--edge); }
+.embed-card img { width: 9rem; object-fit: cover; border-radius: 0; filter: none; flex: none; }
+.embed-body { display: flex; flex-direction: column; gap: .25rem; padding: .9rem 1rem; min-width: 0; line-height: 1.5; }
+.embed-title { font-size: var(--t-md); font-weight: 600; }
+.embed-desc { font-size: var(--t-sm); color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.embed-host { font-size: var(--t-xs); color: var(--muted); font-family: var(--mono); }
+.callout { padding: .9rem 1.1rem; border: 1px solid var(--border); border-left: 3px solid var(--edge); border-radius: var(--r); background: var(--surface-2); font-size: .95em; line-height: 1.9; }
+.callout > :first-child { margin-top: 0; } .callout > :last-child { margin-bottom: 0; }
+.callout-warning { border-left-color: var(--warn); }
